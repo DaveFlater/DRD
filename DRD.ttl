@@ -1,0 +1,311 @@
+# Dynamic Range Destroyer (DRD)
+# © 2025 David Flater
+# GPLv3
+
+@prefix doap:  <http://usefulinc.com/ns/doap#> .
+@prefix lv2:   <http://lv2plug.in/ns/lv2core#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix units: <http://lv2plug.in/ns/extensions/units#> .
+@prefix DRD:   <http://flaterco.com/lv2/DRD#> .
+
+# The attack and decay controls have a minimum of 0 s and no maximum.  The
+# omitted maximum currently is reported by FFmpeg as NaN.  Ignore that.
+# https://trac.ffmpeg.org/ticket/11663
+# Putting an infinity into the maximum field makes it worse.  See discussion
+# at https://github.com/lv2/lilv/issues/67
+
+# Versioning protocol per lv2core.html:
+# Increment micro version if anything at all changed, even documentation.
+# Increment minor version for a backward-compatible API change like adding a
+# port.  (I assume that you reset micro version to 0 when that happens.)
+# Incompatible changes (major revisions) require a new URI.
+# An odd minor or micro version, or minor version zero, indicates that the
+# resource is a development version.
+# The version is not reported by lv2info.
+
+DRD:mono
+	a lv2:Plugin;
+	doap:name "Dynamic Range Destroyer (DRD)";
+	lv2:minorVersion 1;
+	lv2:microVersion 0;
+	doap:license <http://usefulinc.com/doap/licenses/gpl>;
+	lv2:optionalFeature lv2:hardRTCapable;
+	lv2:port [
+		a lv2:InputPort, lv2:ControlPort;
+		lv2:index 0;
+		lv2:symbol "attack";
+		lv2:name "Attack";
+		lv2:default 0.01;
+		lv2:minimum 0.0;
+		# lv2:maximum "INF"^^xsd:float;
+		units:unit units:s;
+	], [
+		a lv2:InputPort, lv2:ControlPort;
+		lv2:index 1;
+		lv2:symbol "decay";
+		lv2:name "Decay";
+		lv2:default 0.5;
+		lv2:minimum 0.0;
+		# lv2:maximum "INF"^^xsd:float;
+		units:unit units:s;
+	], [
+		a lv2:AudioPort, lv2:InputPort;
+		lv2:index 2;
+		lv2:symbol "in";
+		lv2:name "In"
+	], [
+		a lv2:AudioPort, lv2:OutputPort;
+		lv2:index 3;
+		lv2:symbol "out";
+		lv2:name "Out"
+	];
+	rdfs:comment "Mono Dynamic Range Destroyer (DRD)"
+	.
+
+DRD:stereo
+	a lv2:Plugin;
+	doap:name "Dynamic Range Destroyer (DRD)";
+	lv2:minorVersion 1;
+	lv2:microVersion 0;
+	doap:license <http://usefulinc.com/doap/licenses/gpl>;
+	lv2:optionalFeature lv2:hardRTCapable;
+	lv2:port [
+		a lv2:InputPort, lv2:ControlPort;
+		lv2:index 0;
+		lv2:symbol "attack";
+		lv2:name "Attack";
+		lv2:default 0.01;
+		lv2:minimum 0.0;
+		# lv2:maximum "INF"^^xsd:float;
+		units:unit units:s;
+	], [
+		a lv2:InputPort, lv2:ControlPort;
+		lv2:index 1;
+		lv2:symbol "decay";
+		lv2:name "Decay";
+		lv2:default 0.5;
+		lv2:minimum 0.0;
+		# lv2:maximum "INF"^^xsd:float;
+		units:unit units:s;
+	], [
+		a lv2:AudioPort, lv2:InputPort;
+		lv2:index 2;
+		lv2:symbol "inL";
+		lv2:name "In Left"
+	], [
+		a lv2:AudioPort, lv2:OutputPort;
+		lv2:index 3;
+		lv2:symbol "outL";
+		lv2:name "Out Left"
+	], [
+		a lv2:AudioPort, lv2:InputPort;
+		lv2:index 4;
+		lv2:symbol "inR";
+		lv2:name "In Right"
+	], [
+		a lv2:AudioPort, lv2:OutputPort;
+		lv2:index 5;
+		lv2:symbol "outR";
+		lv2:name "Out Right"
+	];
+	rdfs:comment "Stereo Dynamic Range Destroyer (DRD)"
+	.
+
+DRD:6ch
+	a lv2:Plugin;
+	doap:name "Dynamic Range Destroyer (DRD)";
+	lv2:minorVersion 1;
+	lv2:microVersion 0;
+	doap:license <http://usefulinc.com/doap/licenses/gpl>;
+	lv2:optionalFeature lv2:hardRTCapable;
+	lv2:port [
+		a lv2:InputPort, lv2:ControlPort;
+		lv2:index 0;
+		lv2:symbol "attack";
+		lv2:name "Attack";
+		lv2:default 0.01;
+		lv2:minimum 0.0;
+		# lv2:maximum "INF"^^xsd:float;
+		units:unit units:s;
+	], [
+		a lv2:InputPort, lv2:ControlPort;
+		lv2:index 1;
+		lv2:symbol "decay";
+		lv2:name "Decay";
+		lv2:default 0.5;
+		lv2:minimum 0.0;
+		# lv2:maximum "INF"^^xsd:float;
+		units:unit units:s;
+	], [
+		a lv2:AudioPort, lv2:InputPort;
+		lv2:index 2;
+		lv2:symbol "inFL";
+		lv2:name "In Front Left"
+	], [
+		a lv2:AudioPort, lv2:OutputPort;
+		lv2:index 3;
+		lv2:symbol "outFL";
+		lv2:name "Out Front Left"
+	], [
+		a lv2:AudioPort, lv2:InputPort;
+		lv2:index 4;
+		lv2:symbol "inFR";
+		lv2:name "In Front Right"
+	], [
+		a lv2:AudioPort, lv2:OutputPort;
+		lv2:index 5;
+		lv2:symbol "outFR";
+		lv2:name "Out Front Right"
+	], [
+		a lv2:AudioPort, lv2:InputPort;
+		lv2:index 6;
+		lv2:symbol "inFC";
+		lv2:name "In Front Center"
+	], [
+		a lv2:AudioPort, lv2:OutputPort;
+		lv2:index 7;
+		lv2:symbol "outFC";
+		lv2:name "Out Front Center"
+	], [
+		a lv2:AudioPort, lv2:InputPort;
+		lv2:index 8;
+		lv2:symbol "inLFE";
+		lv2:name "In Low Frequency"
+	], [
+		a lv2:AudioPort, lv2:OutputPort;
+		lv2:index 9;
+		lv2:symbol "outLFE";
+		lv2:name "Out Low Frequency"
+	], [
+		a lv2:AudioPort, lv2:InputPort;
+		lv2:index 10;
+		lv2:symbol "inRL";
+		lv2:name "In Rear Left"
+	], [
+		a lv2:AudioPort, lv2:OutputPort;
+		lv2:index 11;
+		lv2:symbol "outRL";
+		lv2:name "Out Rear Left"
+	], [
+		a lv2:AudioPort, lv2:InputPort;
+		lv2:index 12;
+		lv2:symbol "inRR";
+		lv2:name "In Rear Right"
+	], [
+		a lv2:AudioPort, lv2:OutputPort;
+		lv2:index 13;
+		lv2:symbol "outRR";
+		lv2:name "Out Rear Right"
+	];
+	rdfs:comment "6ch Dynamic Range Destroyer (DRD)"
+	.
+
+DRD:8ch
+	a lv2:Plugin;
+	doap:name "Dynamic Range Destroyer (DRD)";
+	lv2:minorVersion 1;
+	lv2:microVersion 0;
+	doap:license <http://usefulinc.com/doap/licenses/gpl>;
+	lv2:optionalFeature lv2:hardRTCapable;
+	lv2:port [
+		a lv2:InputPort, lv2:ControlPort;
+		lv2:index 0;
+		lv2:symbol "attack";
+		lv2:name "Attack";
+		lv2:default 0.01;
+		lv2:minimum 0.0;
+		# lv2:maximum "INF"^^xsd:float;
+		units:unit units:s;
+	], [
+		a lv2:InputPort, lv2:ControlPort;
+		lv2:index 1;
+		lv2:symbol "decay";
+		lv2:name "Decay";
+		lv2:default 0.5;
+		lv2:minimum 0.0;
+		# lv2:maximum "INF"^^xsd:float;
+		units:unit units:s;
+	], [
+		a lv2:AudioPort, lv2:InputPort;
+		lv2:index 2;
+		lv2:symbol "inFL";
+		lv2:name "In Front Left"
+	], [
+		a lv2:AudioPort, lv2:OutputPort;
+		lv2:index 3;
+		lv2:symbol "outFL";
+		lv2:name "Out Front Left"
+	], [
+		a lv2:AudioPort, lv2:InputPort;
+		lv2:index 4;
+		lv2:symbol "inFR";
+		lv2:name "In Front Right"
+	], [
+		a lv2:AudioPort, lv2:OutputPort;
+		lv2:index 5;
+		lv2:symbol "outFR";
+		lv2:name "Out Front Right"
+	], [
+		a lv2:AudioPort, lv2:InputPort;
+		lv2:index 6;
+		lv2:symbol "inFC";
+		lv2:name "In Front Center"
+	], [
+		a lv2:AudioPort, lv2:OutputPort;
+		lv2:index 7;
+		lv2:symbol "outFC";
+		lv2:name "Out Front Center"
+	], [
+		a lv2:AudioPort, lv2:InputPort;
+		lv2:index 8;
+		lv2:symbol "inLFE";
+		lv2:name "In Low Frequency"
+	], [
+		a lv2:AudioPort, lv2:OutputPort;
+		lv2:index 9;
+		lv2:symbol "outLFE";
+		lv2:name "Out Low Frequency"
+	], [
+		a lv2:AudioPort, lv2:InputPort;
+		lv2:index 10;
+		lv2:symbol "inRL";
+		lv2:name "In Rear Left"
+	], [
+		a lv2:AudioPort, lv2:OutputPort;
+		lv2:index 11;
+		lv2:symbol "outRL";
+		lv2:name "Out Rear Left"
+	], [
+		a lv2:AudioPort, lv2:InputPort;
+		lv2:index 12;
+		lv2:symbol "inRR";
+		lv2:name "In Rear Right"
+	], [
+		a lv2:AudioPort, lv2:OutputPort;
+		lv2:index 13;
+		lv2:symbol "outRR";
+		lv2:name "Out Rear Right"
+	], [
+		a lv2:AudioPort, lv2:InputPort;
+		lv2:index 14;
+		lv2:symbol "inSL";
+		lv2:name "In Side Left"
+	], [
+		a lv2:AudioPort, lv2:OutputPort;
+		lv2:index 15;
+		lv2:symbol "outSL";
+		lv2:name "Out Side Left"
+	], [
+		a lv2:AudioPort, lv2:InputPort;
+		lv2:index 16;
+		lv2:symbol "inSR";
+		lv2:name "In Side Right"
+	], [
+		a lv2:AudioPort, lv2:OutputPort;
+		lv2:index 17;
+		lv2:symbol "outSR";
+		lv2:name "Out Side Right"
+	];
+	rdfs:comment "8ch Dynamic Range Destroyer (DRD)"
+	.
