@@ -75,10 +75,17 @@ See
 [https://flaterco.com/kb/audio/pipewire/volume.html](https://flaterco.com/kb/audio/pipewire/volume.html)
 for details and an installation kit.
 
-If FFmpeg was configured with --enable-lv2, you can use DRD like `-af
+If [FFmpeg](https://ffmpeg.org/) was configured with --enable-lv2, you can
+use DRD through a command line option similar to `-af
 'lv2=p=http\\://flaterco.com/lv2/DRD#stereo:c=attack=0.01|decay=0.5'`.  Be
 sure to match the plugin URI to the number of channels of the input file
 (mono, stereo, 6ch, or 8ch) to avoid surprising behavior.
+
+If [mpv](https://mpv.io/) is able to find the run-time dependency
+libavfilter, you can use DRD through a command line option similar to
+`'--af=lavfi="lv2=p=http\\://flaterco.com/lv2/DRD#stereo:c=attack=0.01|decay=0.5"'`.
+Again, please match the plugin URI to the number of channels of the input
+file to avoid surprising behavior.
 
 ## Technical details
 
