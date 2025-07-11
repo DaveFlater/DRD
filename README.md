@@ -87,6 +87,12 @@ libavfilter, you can use DRD through a command line option similar to
 Again, please match the plugin URI to the number of channels of the input
 file to avoid surprising behavior.
 
+[Tenacity](https://tenacityaudio.org/) does not work with DRD at the moment.
+Tenacity supports LV2 plugins and is seemingly able to apply DRD, but the
+result is silent audio.  The pertinent
+[code](https://codeberg.org/tenacityteam/tenacity) in src/effects/lv2 is
+complex.
+
 ## Technical details
 
 DRD is functionally similar to the compand filter of [FFmpeg version
