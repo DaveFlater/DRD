@@ -4,7 +4,7 @@
 
 // Embed lv2:minorVersion and lv2:microVersion (see DRD.ttl) in the so file.
 // Retrieve with:  strings DRD.so | grep -F 'DRD version'
-const char VersionString[] = "DRD version 1.0";
+const char VersionString[] = "DRD version 1.1";
 
 #include <math.h>
 #include <stdbool.h>
@@ -44,7 +44,6 @@ typedef struct {
   float *buffer[16];    // one input one output up to 8 channels
 
   // Other state
-  bool    init;         // flag for first call to run()
   double  samplerate;   // Hz as supplied by instantiate
   uint8_t nchannels;    // 1, 2, 6, or 8
   double  volume;       // floating volume level 0 to 1
@@ -60,12 +59,10 @@ static double convert_parameter(DRD *drd, double s) {
 }
 
 // Set necessary values prior to run().  samplerate and nchannels are set by
-// instantiate.  attack and decay are set by run on the first invocation
-// (when init is true).  The defaults for attack and decay that are specified
-// in DRD.ttl should be supplied on attackport and decayport if the user does
-// not specify values.
+// instantiate.  attack and decay are set by run.  The defaults for attack
+// and decay that are specified in DRD.ttl should be supplied on attackport
+// and decayport if the user does not specify values.
 static void initialize_DRD(DRD *drd) {
-  drd->init = true;
   drd->volume = 0.17782794;  // initial volume -15 dB
 }
 
@@ -100,20 +97,22 @@ instantiate(const LV2_Descriptor*     descriptor,
   return (LV2_Handle)drd;
 }
 
-// share/doc/lv2/ns/lv2core.html
-// To support lv2:hardRTCapable, the following constraints apply to
-// connect_port() and run():
-// - There is no use of malloc(), free() or any other heap memory management
-//   functions.
-// - There is no use of any library functions which do not adhere to these
-//   rules.  The plugin may assume that the standard C math library functions
-//   are safe.
-// - There is no access to files, devices, pipes, sockets, system calls, or
-//   any other mechanism that might result in the process or thread blocking.
-// - The maximum amount of time for a run() call is bounded by some
-//   expression of the form A + B * sample_count, where A and B are platform
-//   specific constants.  Note that this bound does not depend on input
-//   signals or plugin state.
+/*
+  share/doc/lv2/ns/lv2core.html
+  To support lv2:hardRTCapable, the following constraints apply to
+  connect_port() and run():
+  - There is no use of malloc(), free() or any other heap memory management
+    functions.
+  - There is no use of any library functions which do not adhere to these
+    rules.  The plugin may assume that the standard C math library functions
+    are safe.
+  - There is no access to files, devices, pipes, sockets, system calls, or
+    any other mechanism that might result in the process or thread blocking.
+  - The maximum amount of time for a run() call is bounded by some
+    expression of the form A + B * sample_count, where A and B are platform
+    specific constants.  Note that this bound does not depend on input
+    signals or plugin state.
+*/
 
 /*
    The `connect_port()` method is called by the host to connect a particular
@@ -192,17 +191,10 @@ static double get_gain(double in_lvl) {
 static void run(LV2_Handle instance, uint32_t n_samples) {
   DRD* drd = (DRD*)instance;
 
-  // Since we're not allowed to assume that data are valid yet in either
-  // connect_port or activate, we have to do this here on the first
-  // invocation (or more if they can change on the fly).
-  //
-  // The declared ranges of the parameters are not enforced prior to reaching
-  // here.  convert_parameter treats negative values the same as zero.
-  if (drd->init) {
-    drd->init = false;
-    drd->attack = convert_parameter(drd, *drd->attackport);
-    drd->decay = convert_parameter(drd, *drd->decayport);
-  }
+  // Poll the control knobs to respond to changes.  Some hosts can change
+  // these on the fly and some can't.
+  drd->attack = convert_parameter(drd, *drd->attackport);
+  drd->decay = convert_parameter(drd, *drd->decayport);
 
   for (uint32_t pos = 0; pos < n_samples; ++pos) {
     // Estimate overall volume level as the maximum level of any channel

@@ -28,7 +28,7 @@ DRD:mono
 	a lv2:Plugin;
 	doap:name "Dynamic Range Destroyer (DRD)";
 	lv2:minorVersion 1;
-	lv2:microVersion 0;
+	lv2:microVersion 1;
 	doap:license <http://usefulinc.com/doap/licenses/gpl>;
 	lv2:optionalFeature lv2:hardRTCapable;
 	lv2:port [
@@ -67,7 +67,7 @@ DRD:stereo
 	a lv2:Plugin;
 	doap:name "Dynamic Range Destroyer (DRD)";
 	lv2:minorVersion 1;
-	lv2:microVersion 0;
+	lv2:microVersion 1;
 	doap:license <http://usefulinc.com/doap/licenses/gpl>;
 	lv2:optionalFeature lv2:hardRTCapable;
 	lv2:port [
@@ -116,7 +116,7 @@ DRD:6ch
 	a lv2:Plugin;
 	doap:name "Dynamic Range Destroyer (DRD)";
 	lv2:minorVersion 1;
-	lv2:microVersion 0;
+	lv2:microVersion 1;
 	doap:license <http://usefulinc.com/doap/licenses/gpl>;
 	lv2:optionalFeature lv2:hardRTCapable;
 	lv2:port [
@@ -205,7 +205,7 @@ DRD:8ch
 	a lv2:Plugin;
 	doap:name "Dynamic Range Destroyer (DRD)";
 	lv2:minorVersion 1;
-	lv2:microVersion 0;
+	lv2:microVersion 1;
 	doap:license <http://usefulinc.com/doap/licenses/gpl>;
 	lv2:optionalFeature lv2:hardRTCapable;
 	lv2:port [
