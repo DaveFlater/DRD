@@ -105,7 +105,7 @@ plots below).
 
 ![The transfer functions of DRD and compand -100/-100|-50/-15|0/-15:1:0 are plotted with input volume in dB on the x axis and target volume in dB on the y axis.  DRD:  Below -100 dB input the volume is unchanged.  Above -50 dB input the target volume is flat at -15 dB.  Between -100 and -50 dB input is a smooth curve.  Compand differs from DRD by making hard turns at the inflection points, taking a straight line between them, and having a small hook up to -14 dB output as the input level reaches 0 dB.](TransferFunctions.svg)
 
-![DRD gain function.  The x axis is input volume in dB.  The y axis is gain in dB.  The gain rises in a curve from 0 dB at input volume -100 dB to a peak at approximately 38.3 dB at input volume -56.94̅ dB, then curves downward, becoming a straight downward-sloping line that reaches -15 dB at input volume 0 dB.](Gain.svg)
+![DRD gain function.  The x axis is input volume in dB.  The y axis is gain in dB.  The gain rises in a curve from 0 dB at input volume -100 dB to a peak at approximately 38.31 dB at input volume -56.94̅ dB, then curves downward, becoming a straight downward-sloping line that reaches -15 dB at input volume 0 dB.](Gain.svg)
 
 The process involves a state variable herein called the floating volume
 level.  It follows the volume of the input in a general sense, effectively
