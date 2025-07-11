@@ -44,20 +44,18 @@ http://flaterco.com/lv2/DRD#stereo
 Range (0 to ∞) s<br>
 Default 0.01 s
 
-An indication of the rate at which DRD lowers the gain in response to
-increases in the volume of the input.  It is an exponential process.  The
-attack is the time for the gain to respond to 1 − 1/e or approximately 63% of
-an increase of input level.
+An indication of the rate at which DRD responds to increases in the volume of
+the input.  It is an exponential process.  The attack is the time to respond
+to 1 − 1/e or approximately 63% of an increase of input level.
 
 ### Decay
 
 Range (0 to ∞) s<br>
 Default 0.5 s
 
-An indication of the rate at which DRD increases the gain in response to
-decreases in the volume of the input.  It is an exponential process.  The
-decay is the time for the gain to respond to 1 − 1/e or approximately 63% of
-a decrease of input level.
+An indication of the rate at which DRD responds to decreases in the volume of
+the input.  It is an exponential process.  The decay is the time to respond
+to 1 − 1/e or approximately 63% of a decrease of input level.
 
 ## Example uses
 
@@ -87,6 +85,9 @@ libavfilter, you can use DRD through a command line option similar to
 Again, please match the plugin URI to the number of channels of the input
 file to avoid surprising behavior.
 
+[Ardour](https://ardour.org/) works with DRD.  It provides sliders to change
+attack and decay on the fly, albeit with a defaulted maximum of 1 s each.
+
 [Tenacity](https://tenacityaudio.org/) does not work with DRD at the moment.
 Tenacity supports LV2 plugins and is seemingly able to apply DRD, but the
 result is silent audio.  The pertinent
@@ -104,7 +105,7 @@ plots below).
 
 ![The transfer functions of DRD and compand -100/-100|-50/-15|0/-15:1:0 are plotted with input volume in dB on the x axis and target volume in dB on the y axis.  DRD:  Below -100 dB input the volume is unchanged.  Above -50 dB input the target volume is flat at -15 dB.  Between -100 and -50 dB input is a smooth curve.  Compand differs from DRD by making hard turns at the inflection points, taking a straight line between them, and having a small hook up to -14 dB output as the input level reaches 0 dB.](TransferFunctions.svg)
 
-![DRD gain function.  The x axis is input volume in dB.  The y axis is gain in dB.  The gain rises in a curve from 0 dB at input volume -100 dB to a peak around 38 dB at input volume -57 dB, then curves downward, becoming a straight downward-sloping line that reaches -15 dB at input volume 0 dB.](Gain.svg)
+![DRD gain function.  The x axis is input volume in dB.  The y axis is gain in dB.  The gain rises in a curve from 0 dB at input volume -100 dB to a peak at approximately 38.3 dB at input volume -56.94̅ dB, then curves downward, becoming a straight downward-sloping line that reaches -15 dB at input volume 0 dB.](Gain.svg)
 
 The process involves a state variable herein called the floating volume
 level.  It follows the volume of the input in a general sense, effectively
@@ -117,15 +118,23 @@ The following steps are done for each sample:
 3. Evaluate the gain function using the floating volume level as input.
 4. Apply that gain to every channel.
 
-Clipping is not prevented.  Loud pops will occur and it is intended that they
-be clipped.  The plot below shows the worst-case scenario where the input
-level instantaneously transitions from 0 (minimum) to 1 (maximum) at time 0
-and stays there.  Since the floating volume level sweeps the range starting
-from 0, it passes through the peak of maximum gain on its way to the top,
-resulting in an extreme pop 38 dB beyond the limit within the first few
+DRD does not avoid or prevent clipping, nor does it clip the output values
+itself.  They are delivered as floats, which can go outside the intended
+range of −1 to 1.  It is assumed and intended that clipping will occur
+downstream.
+
+The plot below shows the nominal worst-case scenario where the input level
+instantaneously transitions from 0 (minimum) to 1 (maximum) at time 0 and
+stays there.  Since the floating volume level sweeps the range starting from
+0, it passes through the peak of maximum gain on its way to the top,
+resulting in an extreme pop 38.3 dB beyond the limit within the first few
 samples.  Negative gain is applied after ⅕ of the attack time has elapsed.
 
 ![Worst case clipping (instantaneous 0-to-1 input volume transition).  The x axis is time divided by attack ranging from 0 to 0.5.  The y axis is decibels ranging from -60 to 40, against which scale both the floating volume and the gain applied are plotted.  A thick red horizontal line at 0 dB indicates the maximum applicable gain.  The floating volume enters nearly vertically from the bottom left corner and then curves sharply to the right, nearing -8 dB at the end of the x axis.  The gain applied almost instantly shoots up to the maximum of 38 dB then decays rapidly till it crosses the 0 dB line just before x = 0.2.  At the right side of the plot it is close to -7 dB.](WorstCase.svg)
+
+Of course, if the input to DRD is already out of range, the output can be
+worse yet, but such input does not cause DRD to fail.  DRD will continue to
+reduce the gain until the −15 dB target is reached.
 
 ## Acknowledgments
 
