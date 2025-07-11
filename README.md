@@ -83,7 +83,7 @@ sure to match the plugin URI to the number of channels of the input file
 
 If [mpv](https://mpv.io/) is able to find the run-time dependency
 libavfilter, you can use DRD through a command line option similar to
-`'--af=lavfi="lv2=p=http\\://flaterco.com/lv2/DRD#stereo:c=attack=0.01|decay=0.5"'`.
+`--af='lavfi="lv2=p=http\\://flaterco.com/lv2/DRD#stereo:c=attack=0.01|decay=0.5"'`.
 Again, please match the plugin URI to the number of channels of the input
 file to avoid surprising behavior.
 
