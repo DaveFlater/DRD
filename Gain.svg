@@ -109,7 +109,10 @@
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
 </g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<path stroke='black'  d='M64.14,56.09 L64.14,310.32 L474.82,310.32 L474.82,56.09 L64.14,56.09 Z  '/></g>
+	<path stroke='black'  d='M64.14,56.09 L64.14,310.32 L474.82,310.32 L474.82,56.09 L64.14,56.09 Z  '/>	<g transform="translate(269.48,276.09)" stroke="none" fill="black" font-family="Arial" font-size="12.00"  text-anchor="middle">
+		<text><tspan font-family="Arial" >Max gain ≈ 38.31 dB at input volume −56.94̅ dB</tspan></text>
+	</g>
+</g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
 </g>
 	<g id="gnuplot_plot_1" ><title>$gain(x)</title>
