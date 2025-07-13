@@ -5,9 +5,10 @@
 
 ## Overview
 
-Dynamic Range Destroyer (DRD) is an audio compression filter that aims to
-remove big changes in volume from an audio stream.  It supports mono, stereo,
-6-channel, and 8-channel streams, and it preserves the balance among
+Dynamic Range Destroyer (DRD) is an audio compressor plugin that aims to
+remove changes in volume from an audio stream.  This effect is also called
+automatic volume levelling or volume normalization.  It supports mono,
+stereo, 6-channel, and 8-channel streams, and it preserves the balance among
 channels.
 
 ## Build and install

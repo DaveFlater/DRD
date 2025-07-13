@@ -4,7 +4,7 @@
 
 // Embed lv2:minorVersion and lv2:microVersion (see DRD.ttl) in the so file.
 // Retrieve with:  strings DRD.so | grep -F 'DRD version'
-const char VersionString[] = "DRD version 1.2";
+const char VersionString[] = "DRD version 2.0";
 
 #include <math.h>
 #include <stdbool.h>
