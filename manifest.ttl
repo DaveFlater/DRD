@@ -7,21 +7,21 @@
 @prefix DRD:  <http://flaterco.com/lv2/DRD#> .
 
 DRD:mono
-	a lv2:Plugin ;
-	lv2:binary <DRD.so> ;
-	rdfs:seeAlso <DRD.ttl> .
+	a lv2:CompressorPlugin;
+	lv2:binary <DRD.so>;
+	rdfs:seeAlso <DRD.ttl>.
 
 DRD:stereo
-	a lv2:Plugin ;
-	lv2:binary <DRD.so> ;
-	rdfs:seeAlso <DRD.ttl> .
+	a lv2:CompressorPlugin;
+	lv2:binary <DRD.so>;
+	rdfs:seeAlso <DRD.ttl>.
 
 DRD:6ch
-	a lv2:Plugin ;
-	lv2:binary <DRD.so> ;
-	rdfs:seeAlso <DRD.ttl> .
+	a lv2:CompressorPlugin;
+	lv2:binary <DRD.so>;
+	rdfs:seeAlso <DRD.ttl>.
 
 DRD:8ch
-	a lv2:Plugin ;
-	lv2:binary <DRD.so> ;
-	rdfs:seeAlso <DRD.ttl> .
+	a lv2:CompressorPlugin;
+	lv2:binary <DRD.so>;
+	rdfs:seeAlso <DRD.ttl>.
