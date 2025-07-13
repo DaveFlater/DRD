@@ -30,8 +30,13 @@
 	foaf:name "Dave Flater";
 	foaf:homepage <https://github.com/DaveFlater/DRD>.
 
+# Examples say:
+# All plugins must explicitly list `lv2:Plugin` as a type.  A more specific
+# type should also be given, where applicable, so hosts can present a nicer
+# UI for loading plugins.
+
 DRD:mono
-	a lv2:CompressorPlugin;
+	a lv2:Plugin, lv2:CompressorPlugin;
 	doap:name "Dynamic Range Destroyer (DRD) mono";
 	doap:shortName "DRD mono";
 	doap:maintainer <http://flaterco.com/dave>;
@@ -72,7 +77,7 @@ DRD:mono
 	.
 
 DRD:stereo
-	a lv2:CompressorPlugin;
+	a lv2:Plugin, lv2:CompressorPlugin;
 	doap:name "Dynamic Range Destroyer (DRD) stereo";
 	doap:shortName "DRD stereo";
 	doap:maintainer <http://flaterco.com/dave>;
@@ -123,7 +128,7 @@ DRD:stereo
 	.
 
 DRD:6ch
-	a lv2:CompressorPlugin;
+	a lv2:Plugin, lv2:CompressorPlugin;
 	doap:name "Dynamic Range Destroyer (DRD) 6ch";
 	doap:shortName "DRD 6ch";
 	doap:maintainer <http://flaterco.com/dave>;
@@ -214,7 +219,7 @@ DRD:6ch
 	.
 
 DRD:8ch
-	a lv2:CompressorPlugin;
+	a lv2:Plugin, lv2:CompressorPlugin;
 	doap:name "Dynamic Range Destroyer (DRD) 8ch";
 	doap:shortName "DRD 8ch";
 	doap:maintainer <http://flaterco.com/dave>;
