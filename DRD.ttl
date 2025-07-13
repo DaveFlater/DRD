@@ -3,6 +3,7 @@
 # GPLv3
 
 @prefix doap:  <http://usefulinc.com/ns/doap#> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
 @prefix lv2:   <http://lv2plug.in/ns/lv2core#> .
 @prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
@@ -24,11 +25,18 @@
 # resource is a development version.
 # The version is not reported by lv2info.
 
+<http://flaterco.com/dave>
+	a foaf:Person;
+	foaf:name "Dave Flater";
+	foaf:homepage <https://github.com/DaveFlater/DRD>.
+
 DRD:mono
-	a lv2:Plugin;
-	doap:name "Dynamic Range Destroyer (DRD)";
+	a lv2:CompressorPlugin;
+	doap:name "Dynamic Range Destroyer (DRD) mono";
+	doap:shortName "DRD mono";
+	doap:maintainer <http://flaterco.com/dave>;
 	lv2:minorVersion 1;
-	lv2:microVersion 1;
+	lv2:microVersion 2;
 	doap:license <http://usefulinc.com/doap/licenses/gpl>;
 	lv2:optionalFeature lv2:hardRTCapable;
 	lv2:port [
@@ -60,14 +68,16 @@ DRD:mono
 		lv2:symbol "out";
 		lv2:name "Out"
 	];
-	rdfs:comment "Mono Dynamic Range Destroyer (DRD)"
+	rdfs:comment "Dynamic Range Destroyer (DRD) mono"
 	.
 
 DRD:stereo
-	a lv2:Plugin;
-	doap:name "Dynamic Range Destroyer (DRD)";
+	a lv2:CompressorPlugin;
+	doap:name "Dynamic Range Destroyer (DRD) stereo";
+	doap:shortName "DRD stereo";
+	doap:maintainer <http://flaterco.com/dave>;
 	lv2:minorVersion 1;
-	lv2:microVersion 1;
+	lv2:microVersion 2;
 	doap:license <http://usefulinc.com/doap/licenses/gpl>;
 	lv2:optionalFeature lv2:hardRTCapable;
 	lv2:port [
@@ -109,14 +119,16 @@ DRD:stereo
 		lv2:symbol "outR";
 		lv2:name "Out Right"
 	];
-	rdfs:comment "Stereo Dynamic Range Destroyer (DRD)"
+	rdfs:comment "Dynamic Range Destroyer (DRD) stereo"
 	.
 
 DRD:6ch
-	a lv2:Plugin;
-	doap:name "Dynamic Range Destroyer (DRD)";
+	a lv2:CompressorPlugin;
+	doap:name "Dynamic Range Destroyer (DRD) 6ch";
+	doap:shortName "DRD 6ch";
+	doap:maintainer <http://flaterco.com/dave>;
 	lv2:minorVersion 1;
-	lv2:microVersion 1;
+	lv2:microVersion 2;
 	doap:license <http://usefulinc.com/doap/licenses/gpl>;
 	lv2:optionalFeature lv2:hardRTCapable;
 	lv2:port [
@@ -198,14 +210,16 @@ DRD:6ch
 		lv2:symbol "outRR";
 		lv2:name "Out Rear Right"
 	];
-	rdfs:comment "6ch Dynamic Range Destroyer (DRD)"
+	rdfs:comment "Dynamic Range Destroyer (DRD) 6ch"
 	.
 
 DRD:8ch
-	a lv2:Plugin;
-	doap:name "Dynamic Range Destroyer (DRD)";
+	a lv2:CompressorPlugin;
+	doap:name "Dynamic Range Destroyer (DRD) 8ch";
+	doap:shortName "DRD 8ch";
+	doap:maintainer <http://flaterco.com/dave>;
 	lv2:minorVersion 1;
-	lv2:microVersion 1;
+	lv2:microVersion 2;
 	doap:license <http://usefulinc.com/doap/licenses/gpl>;
 	lv2:optionalFeature lv2:hardRTCapable;
 	lv2:port [
@@ -307,5 +321,5 @@ DRD:8ch
 		lv2:symbol "outSR";
 		lv2:name "Out Side Right"
 	];
-	rdfs:comment "8ch Dynamic Range Destroyer (DRD)"
+	rdfs:comment "Dynamic Range Destroyer (DRD) 8ch"
 	.
