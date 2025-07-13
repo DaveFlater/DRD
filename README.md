@@ -15,27 +15,32 @@ channels.
 The Makefile takes two variables:
 
 ```
-# Prefix under which the LV2 include files are found
+# Prefix under which the LV2 include files are found (not necessarily where
+# plugin bundles are installed)
 LV2PREFIX ?= /usr
-# Prefix to install the plugin to
-DRDPREFIX ?= $(LV2PREFIX)
+# Directory into which the plugin bundle should be installed
+# For a user install say DESTDIR=$HOME/.lv2
+DESTDIR ?= /usr/local/lib/lv2
 ```
 
 Example installation to home directory:
 
 ```
-$ DRDPREFIX=$HOME make install
+$ DESTDIR=$HOME/.lv2 make install
 gcc -I/usr/include -O2 -fPIC -fvisibility=hidden -shared -lm -o DRD.so DRD.c
-install -d /home/dave/lib/lv2/DRD.lv2
-install DRD.so /home/dave/lib/lv2/DRD.lv2
-install -m 644 manifest.ttl DRD.ttl /home/dave/lib/lv2/DRD.lv2
-$ export LV2_PATH=$HOME/lib/lv2
+install -d /home/dave/.lv2/DRD.lv2
+install DRD.so /home/dave/.lv2/DRD.lv2
+install -m 644 manifest.ttl DRD.ttl /home/dave/.lv2/DRD.lv2
 $ lv2ls
 http://flaterco.com/lv2/DRD#6ch
 http://flaterco.com/lv2/DRD#8ch
 http://flaterco.com/lv2/DRD#mono
 http://flaterco.com/lv2/DRD#stereo
 ```
+
+If the plugin is not found by lv2ls, you need to set or change the value of
+the environment variable LV2_PATH.  The default search path is supposed to
+be $HOME/.lv2:/usr/local/lib/lv2:/usr/lib/lv2.
 
 ## Controls
 
@@ -58,15 +63,6 @@ the input.  It is an exponential process.  The decay is the time to respond
 to 1 − 1/e or approximately 63% of a decrease of input level.
 
 ## Example uses
-
-The environment variable LV2_PATH must be set correctly for the plugin to be
-found.
-
-```
-$ ls ~/lib/lv2
-DRD.lv2
-$ export LV2_PATH=$HOME/lib/lv2
-```
 
 DRD can be installed as a global system audio filter for Linux with PipeWire.
 See
