@@ -1,15 +1,19 @@
-# Dynamic Range Destroyer (DRD) LV2 plugin
+# Dynamic Range Destroyer LV2 plugin (DRD.lv2)
 
 © 2025 David Flater<br>
 [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html)
 
 ## Overview
 
-Dynamic Range Destroyer (DRD) is an audio compressor plugin that aims to
-remove changes in volume from an audio stream.  This effect is also called
-automatic volume levelling or volume normalization.  It supports mono,
-stereo, 6-channel, and 8-channel streams, and it preserves the balance among
-channels.
+Dynamic Range Destroyer (DRD.lv2 or simply DRD) is an audio compressor plugin
+that aims to remove changes in volume from an audio stream.  This effect is
+also called auto volume levelling, volume normalization, or "stable volume."
+It supports mono, stereo, 6-channel, and 8-channel streams, and it preserves
+the balance among channels.
+
+With default settings, DRD provides stronger compression than the "stable
+volume" switch of [YouTube](https://youtube.com/) while causing less
+distortion than a peak limiter with high pre-gain.
 
 ## Build and install
 
