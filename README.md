@@ -11,10 +11,6 @@ also called auto volume levelling, volume normalization, or "stable volume."
 It supports mono, stereo, 6-channel, and 8-channel streams, and it preserves
 the balance among channels.
 
-With default settings, DRD provides stronger compression than the "stable
-volume" switch of [YouTube](https://youtube.com/) while causing less
-distortion than a peak limiter with high pre-gain.
-
 ## Build and install
 
 The Makefile takes two variables:
@@ -102,7 +98,9 @@ DRD is functionally similar to the compand filter of [FFmpeg version
 parameters points=-100/-100|-50/-15|0/-15 soft-knee=1 gain=0 volume=-15
 delay=0.  The major differences are (1) balance is preserved (the same gain
 is applied to every channel) and (2) the transfer function is different (see
-plots below).
+plots below).  Although these plots stop at 0 dB as the nominal maximum input
+volume, DRD effectively extends the straight lines above −50 dB as far as
+necessary to handle out-of-range input.
 
 ![The transfer functions of DRD and compand -100/-100|-50/-15|0/-15:1:0 are plotted with input volume in dB on the x axis and target volume in dB on the y axis.  DRD:  Below -100 dB input the volume is unchanged.  Above -50 dB input the target volume is flat at -15 dB.  Between -100 and -50 dB input is a smooth curve.  Compand differs from DRD by making hard turns at the inflection points, taking a straight line between them, and having a small hook up to -14 dB output as the input level reaches 0 dB.](TransferFunctions.svg)
 
@@ -133,9 +131,9 @@ samples.  Negative gain is applied after ⅕ of the attack time has elapsed.
 
 ![Worst case clipping (instantaneous 0-to-1 input volume transition).  The x axis is time divided by attack ranging from 0 to 0.5.  The y axis is decibels ranging from -60 to 40, against which scale both the floating volume and the gain applied are plotted.  A thick red horizontal line at 0 dB indicates the maximum applicable gain.  The floating volume enters nearly vertically from the bottom left corner and then curves sharply to the right, nearing -8 dB at the end of the x axis.  The gain applied almost instantly shoots up to the maximum of 38 dB then decays rapidly till it crosses the 0 dB line just before x = 0.2.  At the right side of the plot it is close to -7 dB.](WorstCase.svg)
 
-Of course, if the input to DRD is already out of range, the output can be
-worse yet, but such input does not cause DRD to fail.  DRD will continue to
-reduce the gain until the −15 dB target is reached.
+Of course, if the input to DRD is already out of range, the excursion can be
+worse yet, but DRD will continue to reduce the gain until the −15 dB target
+is reached.
 
 ## Acknowledgments
 

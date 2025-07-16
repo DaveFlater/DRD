@@ -43,7 +43,7 @@ DRD:mono
 	doap:name "Dynamic Range Destroyer (DRD) mono";
 	doap:maintainer <http://flaterco.com/dave>;
 	lv2:minorVersion 2;
-	lv2:microVersion 0;
+	lv2:microVersion 2;
 	doap:license <http://usefulinc.com/doap/licenses/gpl>;
 	lv2:optionalFeature lv2:hardRTCapable;
 	lv2:port [
@@ -83,7 +83,7 @@ DRD:stereo
 	doap:name "Dynamic Range Destroyer (DRD) stereo";
 	doap:maintainer <http://flaterco.com/dave>;
 	lv2:minorVersion 2;
-	lv2:microVersion 0;
+	lv2:microVersion 2;
 	doap:license <http://usefulinc.com/doap/licenses/gpl>;
 	lv2:optionalFeature lv2:hardRTCapable;
 	lv2:port [
@@ -133,7 +133,7 @@ DRD:6ch
 	doap:name "Dynamic Range Destroyer (DRD) 6ch";
 	doap:maintainer <http://flaterco.com/dave>;
 	lv2:minorVersion 2;
-	lv2:microVersion 0;
+	lv2:microVersion 2;
 	doap:license <http://usefulinc.com/doap/licenses/gpl>;
 	lv2:optionalFeature lv2:hardRTCapable;
 	lv2:port [
@@ -223,7 +223,7 @@ DRD:8ch
 	doap:name "Dynamic Range Destroyer (DRD) 8ch";
 	doap:maintainer <http://flaterco.com/dave>;
 	lv2:minorVersion 2;
-	lv2:microVersion 0;
+	lv2:microVersion 2;
 	doap:license <http://usefulinc.com/doap/licenses/gpl>;
 	lv2:optionalFeature lv2:hardRTCapable;
 	lv2:port [
