@@ -4,12 +4,12 @@
 
 // Embed lv2:minorVersion and lv2:microVersion (see DRD.ttl) in the so file.
 // Retrieve with:  strings DRD.so | grep -F 'DRD version'
-const char VersionString[] = "DRD version 2.2";
+const char VersionString[] = "DRD version 2.4";
 
 // The L in LV2 means LADSPA.
 // The L in LADSPA means Linux.
 // I ought to be able to use GNU extensions without any screaming.
-// exp10f instead of powf(10.0,
+// exp10f instead of powf(10.0f,
 #define _GNU_SOURCE
 
 #include <math.h>
@@ -61,21 +61,21 @@ typedef struct {
 // Convert attack and decay parameters from seconds to a gain per sample by
 // the same logic used in af_compand.c config_output.
 static float convert_parameter(float s, float samplerate) {
-  return (s > 1.0 / samplerate ?
-	  1.0 - expf(-1.0 / (samplerate * s)) : 1.0);
+  return (s > 1.0f / samplerate ?
+	  1.0f - expf(-1.0f / (samplerate * s)) : 1.0f);
 }
 
 // Constantly used constants:  -15 dB, -50 dB, and -100 dB as levels
-static const float n15dB = exp10f(-0.75),
-                   n50dB = exp10f(-2.5),
-                  n100dB = 1e-5;
+static const float n15dB = exp10f(-0.75f),
+                   n50dB = exp10f(-2.5f),
+                  n100dB = 1e-5f;
 
 // Gain function
 // in_lvl nominal range 0 to 1, permissible range 0 to ∞
 // Returns gain, nominal range 0 to ∞, actual range 0 to 82.333
 static float gainfn(float in_lvl) {
   // Fast paths for straight lines ≤ -100 dB and ≥ -50 dB
-  if (in_lvl <= n100dB) return 1.0;
+  if (in_lvl <= n100dB) return 1.0f;
   if (in_lvl >= n50dB) return n15dB/in_lvl;
   // Slow path for cubic Hermite spline connecting those two lines with slope
   // 1 at -100 dB and slope 0 at -50 dB.  Factor of 20 for conversion to and
@@ -83,7 +83,7 @@ static float gainfn(float in_lvl) {
   const float in1 = log10f(in_lvl);
   const float in2 = in1*in1;
   const float in3 = in2*in1;
-  return exp10f(-0.384*in3 -4.52*in2 -15.4*in1 -17.0) / in_lvl;
+  return exp10f(-0.384f*in3 -4.52f*in2 -15.4f*in1 -17.0f) / in_lvl;
 }
 
 // Set necessary values prior to run().  samplerate and nchannels are set by
@@ -180,7 +180,7 @@ static void activate(LV2_Handle instance) {
 // in_lvl nominal range 0 to 1, permissible range 0 to ∞
 static void update_volume(DRD *drd, float in_lvl) {
   const float delta = in_lvl - drd->volume;
-  if (delta > 0.0)
+  if (delta > 0.0f)
     drd->volume += delta * drd->attack;
   else
     drd->volume += delta * drd->decay;
@@ -200,7 +200,7 @@ static void run(LV2_Handle instance, uint32_t n_samples) {
 
   for (uint32_t pos = 0; pos < n_samples; ++pos) {
     // Estimate overall volume level as the maximum level of any channel
-    float max_lvl = 0.0;
+    float max_lvl = 0.0f;
     for (uint8_t chan=0; chan<drd->nchannels; ++chan) {
       const float chanlvl = fabsf(drd->buffer[chan*2][pos]);
       if (chanlvl > max_lvl) max_lvl = chanlvl;
