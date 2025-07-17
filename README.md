@@ -3,6 +3,8 @@
 © 2025 David Flater<br>
 [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html)
 
+[Note on versioning](#note)
+
 ## Overview
 
 Dynamic Range Destroyer (DRD.lv2 or simply DRD) is an audio compressor plugin
@@ -93,14 +95,14 @@ complex.
 
 ## Technical details
 
-DRD is functionally similar to the compand filter of [FFmpeg version
-7.1.1](https://github.com/FFmpeg/FFmpeg) (libavfilter.so.10.4.100) with fixed
-parameters points=-100/-100|-50/-15|0/-15 soft-knee=1 gain=0 volume=-15
-delay=0.  The major differences are (1) balance is preserved (the same gain
-is applied to every channel) and (2) the transfer function is different (see
-plots below).  Although these plots stop at 0 dB as the nominal maximum input
-volume, DRD effectively extends the straight lines above −50 dB as far as
-necessary to handle out-of-range input.
+DRD is functionally similar to the compand filter of
+[FFmpeg](https://github.com/FFmpeg/FFmpeg) with fixed parameters
+points=-100/-100|-50/-15|0/-15 soft-knee=1 gain=0 volume=-15 delay=0.  The
+major differences are (1) balance is preserved (the same gain is applied to
+every channel) and (2) the transfer function is different (see plots below).
+Although these plots stop at 0 dB as the nominal maximum input volume, DRD
+effectively extends the straight lines above −50 dB as far as necessary to
+handle out-of-range input.
 
 ![The transfer functions of DRD and compand -100/-100|-50/-15|0/-15:1:0 are plotted with input volume in dB on the x axis and target volume in dB on the y axis.  DRD:  Below -100 dB input the volume is unchanged.  Above -50 dB input the target volume is flat at -15 dB.  Between -100 and -50 dB input is a smooth curve.  Compand differs from DRD by making hard turns at the inflection points, taking a straight line between them, and having a small hook up to -14 dB output as the input level reaches 0 dB.](TransferFunctions.svg)
 
@@ -163,3 +165,26 @@ Additional LV2 infrastructure followed the example of [dpl.lv2 version
 > Digital Peak Limiter<br>
 > Copyright (C) 2018 Robin Gareus<br>
 > [GPL v2](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html) and [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html)
+
+## <a name="note">Note on versioning</a>
+
+The release numbers X.Y used for github releases indicate the LV2
+[minorVersion](https://lv2plug.in/ns/lv2core#minorVersion) and
+[microVersion](https://lv2plug.in/ns/lv2core#microVersion) of the plugin.
+The LV2 versioning scheme is described as follows (summarizing from
+[minorVersion](https://lv2plug.in/ns/lv2core#minorVersion)):
+
+> The minor version MUST be incremented when backwards (but not forwards) compatible additions are made, for example the addition of a port to a plugin.
+>
+> The micro version is incremented for changes which do not affect compatibility at all, for example bug fixes or documentation updates.
+>
+> There is deliberately no major version: all versions with the same URI are compatible by definition. Replacing a resource with a newer version of that resource MUST NOT break anything. If a change violates this rule, then the URI of the resource (which serves as the major version) MUST be changed.
+>
+> An odd minor *or* micro version, or minor version zero, indicates that the resource is a development version.
+
+The minor and micro version are specified in the Turtle file DRD.ttl that is
+installed as part of the DRD.lv2 bundle.
+
+The shared library is always installed as simply DRD.so.  The version of
+DRD.so can be retrieved from the binary with
+`strings DRD.so | grep -F 'DRD version'`.
