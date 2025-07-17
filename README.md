@@ -19,7 +19,7 @@ The Makefile takes two variables:
 # Prefix under which the LV2 include files are found (not necessarily where
 # plugin bundles are installed)
 LV2PREFIX ?= /usr
-# Directory into which the plugin bundle should be installed
+# Directory into which the plugin bundle (DRD.lv2) should be installed
 # For a user install say DESTDIR=$HOME/.lv2
 DESTDIR ?= /usr/local/lib/lv2
 ```

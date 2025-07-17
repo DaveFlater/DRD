@@ -4,7 +4,7 @@
 
 // Embed lv2:minorVersion and lv2:microVersion (see DRD.ttl) in the so file.
 // Retrieve with:  strings DRD.so | grep -F 'DRD version'
-const char VersionString[] = "DRD version 2.4";
+const char VersionString[] = "DRD version 2.6";
 
 // The L in LV2 means LADSPA.
 // The L in LADSPA means Linux.
@@ -54,12 +54,11 @@ typedef struct {
   uint8_t nchannels;  // 1, 2, 6, or 8
   float   volume;     // floating volume level, nominally 0 to 1, potentially
                       // 0 to ∞ if the input is already out of range
-  float   attack;     // gain per sample; see convert_parameter
-  float   decay;      // gain per sample; see convert_parameter
 } DRD;
 
-// Convert attack and decay parameters from seconds to a gain per sample by
-// the same logic used in af_compand.c config_output.
+// Convert attack and decay parameters from seconds to a gain per sample.
+// The logic here is equivalent to what happens in config_output in
+// af_compand.c of FFmpeg 7.1.1.
 static float convert_parameter(float s, float samplerate) {
   return (s > 1.0f / samplerate ?
 	  1.0f - expf(-1.0f / (samplerate * s)) : 1.0f);
@@ -86,10 +85,8 @@ static float gainfn(float in_lvl) {
   return exp10f(-0.384f*in3 -4.52f*in2 -16.4f*in1 -17.0f);
 }
 
-// Set necessary values prior to run().  samplerate and nchannels are set by
-// instantiate.  attack and decay are set by run.  The defaults for attack
-// and decay that are specified in DRD.ttl should be supplied on attackport
-// and decayport if the user does not specify values.
+// Initialize state variables prior to run().  samplerate and nchannels are
+// set by instantiate.
 static void initialize_DRD(DRD *drd) {
   drd->volume = n15dB;  // initial volume -15 dB
 }
@@ -105,8 +102,7 @@ static LV2_Handle
 instantiate(const LV2_Descriptor*     descriptor,
             double                    rate,
             const char*               bundle_path,
-            const LV2_Feature* const* features)
-{
+            const LV2_Feature* const* features) {
   DRD* drd = (DRD*)calloc(1, sizeof(DRD));
   drd->samplerate = rate; // double to float conversion
   if (!strcmp (descriptor->URI, DRD_URI "mono"))
@@ -176,16 +172,6 @@ static void activate(LV2_Handle instance) {
   initialize_DRD(drd);
 }
 
-// Floating volume update function, same as in af_compand.c.
-// in_lvl nominal range 0 to 1, permissible range 0 to ∞
-static void update_volume(DRD *drd, float in_lvl) {
-  const float delta = in_lvl - drd->volume;
-  if (delta > 0.0f)
-    drd->volume += delta * drd->attack;
-  else
-    drd->volume += delta * drd->decay;
-}
-
 /*
    The `run()` method is the main process function of the plugin.  It
    processes a block of audio in the audio context.
@@ -194,9 +180,11 @@ static void run(LV2_Handle instance, uint32_t n_samples) {
   DRD* drd = (DRD*)instance;
 
   // Poll the control knobs to respond to changes.  Some hosts can change
-  // these on the fly and some can't.
-  drd->attack = convert_parameter(*drd->attackport, drd->samplerate);
-  drd->decay  = convert_parameter(*drd->decayport,  drd->samplerate);
+  // these on the fly and some can't.  The defaults for attack and decay that
+  // are specified in DRD.ttl should be supplied on attackport and decayport
+  // if the user does not specify values.
+  const float attack = convert_parameter(*drd->attackport, drd->samplerate);
+  const float decay  = convert_parameter(*drd->decayport,  drd->samplerate);
 
   for (uint32_t pos = 0; pos < n_samples; ++pos) {
     // Estimate overall volume level as the maximum level of any channel
@@ -205,8 +193,10 @@ static void run(LV2_Handle instance, uint32_t n_samples) {
       const float chanlvl = fabsf(drd->buffer[chan*2][pos]);
       if (chanlvl > max_lvl) max_lvl = chanlvl;
     }
-    // Update floating volume level based on that
-    update_volume(drd, max_lvl);
+    // Update floating volume level based on max_lvl.  The logic here is
+    // equivalent to update_volume in af_compand.c of FFmpeg 7.1.1.
+    const float delta = max_lvl - drd->volume;
+    drd->volume += delta * (delta > 0.0f ? attack : decay);
     // Get the gain corresponding to the floating volume level
     const float gain = gainfn(drd->volume);
     // Apply that gain to every channel (might clip)
