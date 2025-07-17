@@ -77,13 +77,13 @@ static float gainfn(float in_lvl) {
   // Fast paths for straight lines ≤ -100 dB and ≥ -50 dB
   if (in_lvl <= n100dB) return 1.0f;
   if (in_lvl >= n50dB) return n15dB/in_lvl;
-  // Slow path for cubic Hermite spline connecting those two lines with slope
-  // 1 at -100 dB and slope 0 at -50 dB.  Factor of 20 for conversion to and
-  // from dB has been cancelled out.
+  // Slow path for cubic Hermite spline connecting those two lines.  A factor
+  // of 20 for conversion to and from dB has been cancelled out so that it's
+  // just a function of the log10 of the level.
   const float in1 = log10f(in_lvl);
   const float in2 = in1*in1;
   const float in3 = in2*in1;
-  return exp10f(-0.384f*in3 -4.52f*in2 -15.4f*in1 -17.0f) / in_lvl;
+  return exp10f(-0.384f*in3 -4.52f*in2 -16.4f*in1 -17.0f);
 }
 
 // Set necessary values prior to run().  samplerate and nchannels are set by
