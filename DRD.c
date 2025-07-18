@@ -13,7 +13,6 @@ const char VersionString[] = "DRD version 2.6";
 #define _GNU_SOURCE
 
 #include <math.h>
-#include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
