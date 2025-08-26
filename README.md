@@ -56,6 +56,8 @@ An indication of the rate at which DRD responds to increases in the volume of
 the input.  It is an exponential process.  The attack is the time to respond
 to 1 − 1/e or approximately 63% of an increase of input level.
 
+Note:  A long attack time will make DRD slow to respond when the volume increases, potentially resulting in more and longer periods of excessive output volume and clipping.
+
 ### Decay
 
 Range (0 to ∞) s<br>
