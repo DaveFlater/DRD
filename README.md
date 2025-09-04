@@ -95,6 +95,24 @@ result is silent audio.  The pertinent
 [code](https://codeberg.org/tenacityteam/tenacity) in src/effects/lv2 is
 complex.
 
+## High frequency loudness issue
+
+DRD has a completely flat response in the frequency domain, but perceived
+loudness [fades at high frequencies](https://en.wikipedia.org/wiki/Loudness)
+at a rate that varies from person to person.  So when the spectrum of the
+input is dominated by high frequencies—for example, from a high-pitched
+rattle or the compression artifacts that it begets—the listener may perceive
+an apparent dropout.
+
+A simple cure for these apparent dropouts is to pre-filter out the poorly
+heard high frequencies.  DRD will then set the volume based on the sound that
+you actually hear and no dropout will occur.
+
+Here are two low-pass filters that work well for this purpose:
+
+- With [FFmpeg/libavfilter](https://ffmpeg.org/), 10 ms delay, close to brick-wall:  `firequalizer=gain=if(lt(f\,7500)\,0\,-INF)`
+- With [Linux Studio Plugins](https://lsp-plug.in/), no delay, very steep:  `lv2=p=http\\://lsp-plug.in/plugins/lv2/filter_stereo:c=f=7500|ft=0|mode=0|fm=4|s=7`
+
 ## Technical details
 
 DRD is functionally similar to the compand filter of
