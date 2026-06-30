@@ -157,6 +157,31 @@ Of course, if the input to DRD is already out of range, the excursion can be
 worse yet, but DRD will continue to reduce the gain until the −15 dB target
 is reached.
 
+## Troubleshooting
+
+Symptom:  With controls left on their default values, the audio sounds
+terrible.  It is 200% over-amplified with heavy clipping and it stays that
+way.
+
+Explanation:  Your LV2 host is broken.
+
+1. LV2 hosts use [lilv](https://github.com/lv2/lilv), the LV2 host library.
+2. DRD controls have a lower bound of 0 but no upper bound.
+3. The way that lilv communicates the absence of an upper bound to the host
+   is by returning a NaN (not a number) when the host requests the port
+   ranges.  Quoting from lilv.h:  "If a port doesn't have a minimum, maximum
+   or default value, or the port's type is not float, the corresponding array
+   element will be set to NaN."
+4. Your LV2 host failed to handle the NaN return.  The NaN was used in a
+   numerical comparison to clamp the value of a control and "hilarity
+   ensued."
+5. It is the responsibility of the host to provide valid values on the
+   control ports of the plugin.
+
+There is not necessarily a workaround except to use a different host.  It
+depends on the logic of the host whether there is any way to bypass the
+broken clamping code.
+
 ## Acknowledgments
 
 The starting point for DRD was eg-amp.lv2 in [lv2 version
